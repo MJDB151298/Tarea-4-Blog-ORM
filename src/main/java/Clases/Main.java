@@ -6,12 +6,10 @@ import services.GestionDB;
 
 import java.sql.SQLException;
 
-import static spark.Spark.staticFileLocation;
-
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-        staticFileLocation("/publico");
+        //staticFileLocation("/publico");
         new Rutas().manejoRutas();
 
         //Aplicando Filtros

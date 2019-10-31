@@ -36,6 +36,7 @@ public class Rutas {
             attributes.put("loggedUser", request.session(true).attribute("usuario"));
             attributes.put("pageNumber", pageNumber);
             attributes.put("sizeArticulos", reverseList.size());
+            attributes.put("sizeAllArticulos", Controladora.getInstance().getMisArticulos().size());
             return getPlantilla(configuration, attributes, "index.ftl");
         });
 
@@ -48,7 +49,6 @@ public class Rutas {
         Spark.get("/menu/articulo/:id", (request, response) -> {
             long id = Long.parseLong(request.params("id"));
             Articulo articulo = Controladora.getInstance().buscarArticulo(id);
-            //System.out.println(articulo.getId());
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("articulo", articulo);
             attributes.put("listaComentarios", articulo.getListaComentarios());

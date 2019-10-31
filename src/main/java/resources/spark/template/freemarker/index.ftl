@@ -203,18 +203,18 @@
     $(document).ready(function(){
       var pageNumber = ${pageNumber};
       var sizeArticulos = ${sizeArticulos};
+      var sizeAllArticulos = ${sizeAllArticulos};
       if(pageNumber == 1){
         $('#listOlder').addClass("page-item disabled")
-        $('#listNewer').addClass("page-item");
-        console.log("Help me out here");
-      }
-      else if(sizeArticulos < 5){
-        $('#listOlder').addClass("page-item")
-        $('#listNewer').addClass("page-item disabled");
-        console.log("You shouldnt be here");
       }
       else{
-        $('#listOlder').addClass("page-item")
+        $('#listOlder').addClass("page-item");
+      }
+
+      if(sizeAllArticulos < 5 || sizeArticulos < 5){
+        $('#listNewer').addClass("page-item disabled");
+      }
+      else{
         $('#listNewer').addClass("page-item");
       }
 
