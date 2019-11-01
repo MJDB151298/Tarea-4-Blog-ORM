@@ -108,7 +108,21 @@ public class Rutas {
 
             new GestionDB<Articulo>().crear(art);
             Controladora.getInstance().getMisArticulos().add(art);
-            response.redirect("/menu");
+            response.redirect("/menu/1");
+            return "";
+        });
+
+        Spark.get("/addLike/:idArticle/:usuario", (request, response) -> {
+            long id = Long.parseLong(request.params("idArticle"));
+            Articulo art = Controladora.getInstance().buscarArticulo(id);
+            String username = request.params("usuario");
+            Usuario usu = Controladora.getInstance().buscarAutor(username);
+            Controladora.getInstance().setNumeracionLike(Controladora.getInstance().getNumeracionLike()+1);
+            Likes like = new Likes(usu, art);
+            art.getLikes().add(like);
+            new GestionDB<Likes>().crear(like);
+            new GestionDB<Articulo>().editar(art);
+            response.redirect("/menu/articulo/" + art.getId());
             return "";
         });
 
@@ -143,7 +157,7 @@ public class Rutas {
                 System.out.println("waaaaaasaaaa");
                 response.cookie("usuario_id", usuario.getUsername(), 604800000);
             }
-            response.redirect("/menu");
+            response.redirect("/menu/1");
             return "";
         });
 
@@ -179,7 +193,7 @@ public class Rutas {
             Controladora.getInstance().getMisUsuarios().add(usuario);
             Session session=request.session(true);
             session.attribute("usuario", usuario);
-            response.redirect("/menu");
+            response.redirect("/menu/1");
             return "";
         });
 

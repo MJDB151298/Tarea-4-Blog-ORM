@@ -111,5 +111,31 @@ public class BootStrapServices {
         statement4.execute(sql4);
         statement4.close();
         con4.close();
+
+        String sql7 = "CREATE TABLE IF NOT EXISTS ARTICULO_LIKE\n" +
+                "(\n" +
+                "   ID BIGINT PRIMARY KEY NOT NULL,\n" +
+                "  IDARTICULO INTEGER NOT NULL,\n" +
+                "  LIKES INTEGER NOT NULL,\n" +
+                "  FOREIGN KEY (IDARTICULO) references ARTICULOS(ID)" +
+                ");";
+        Connection con7 = DataBaseServices.getInstancia().getConexion();
+        Statement statement7 = con7.createStatement();
+        statement7.execute(sql7);
+        statement7.close();
+        con7.close();
+
+        String sql8 = "CREATE TABLE IF NOT EXISTS ARTICULO_DISLIKE\n" +
+                "(\n" +
+                "   ID BIGINT PRIMARY KEY NOT NULL,\n" +
+                "  IDARTICULO INTEGER NOT NULL,\n" +
+                "  DISLIKES INTEGER NOT NULL,\n" +
+                "  FOREIGN KEY (IDARTICULO) references ARTICULOS(ID)" +
+                ");";
+        Connection con8 = DataBaseServices.getInstancia().getConexion();
+        Statement statement8 = con8.createStatement();
+        statement8.execute(sql8);
+        statement8.close();
+        con8.close();
     }
 }
