@@ -88,11 +88,11 @@
 
         <!-- Like and Dislike Buttons -->
         <div id="demo">
-          <button class="like">Like
-            <span class="likes">0</span>
-          </button>
-          <button class="dislike">Dislike
-            <span class="dislikes">0</span>
+          <a id="likebutton" class="btn btn-primary">Like
+            <span class="likes">${articulo.likes?size}</span>
+          </a>
+          <button id="dislikebutton" class="dislike">Dislike
+            <span class="dislikes">${articulo.dislikes?size}</span>
           </button>
         </div>
 
@@ -208,10 +208,22 @@
           crossorigin="anonymous"></script>
   <script type="text/javascript">
     $(document).ready(function(){
+        var articleid = ${articulo.id};
+        var username = "${loggedUser.username}";
 
+      $('#likebutton').on('click', function(){
+        var ruta = "/addLike/" + articleid + "/" + username;
+        console.log(ruta);
+        document.location.href = ruta.toString();
+      });
+
+      // $('#dislikebutton').on('click', function(){
+      //   var ruta = "/menu/" + --pageNumber;
+      //   console.log(ruta);
+      //   document.location.href = ruta.toString();
+      // });
     });
   </script>
-
 </body>
 
 </html>

@@ -23,9 +23,30 @@ public class Articulo implements Serializable {
     private List<Etiqueta> listaEtiquetas;
     @Transient
     private String cuerpoResumido;
+    @OneToMany
+    private List<Likes> likes;
+    @OneToMany
+    private List<Dislike> dislikes;
+
 
     public Articulo(){
 
+    }
+
+    public List<Likes> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(ArrayList<Likes> likes) {
+        this.likes = likes;
+    }
+
+    public List<Dislike> getDislikes() {
+        return dislikes;
+    }
+
+    public void setDislikes(ArrayList<Dislike> dislikes) {
+        this.dislikes = dislikes;
     }
 
     public Articulo(String titulo, String cuerpo, Usuario autor){
@@ -37,6 +58,8 @@ public class Articulo implements Serializable {
         this.listaComentarios = new ArrayList<>();
         this.listaEtiquetas = new ArrayList<>();
         this.cuerpoResumido = "";
+        this.likes = new ArrayList<>();
+        this.dislikes = new ArrayList<>();
     }
 
     public long getId() {
@@ -100,4 +123,7 @@ public class Articulo implements Serializable {
     public void setListaEtiquetas(List<Etiqueta> listaEtiquetas) {
         this.listaEtiquetas = listaEtiquetas;
     }
+
+
+
 }

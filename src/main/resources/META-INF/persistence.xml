@@ -9,6 +9,8 @@
         <class>Clases.Comentario</class>
         <class>Clases.Etiqueta</class>
         <class>Clases.Usuario</class>
+        <class>Clases.Likes</class>
+        <class>Clases.Dislike</class>
         <properties>
             <!--<property name="javax.persistence.jdbc.url" value="jdbc:h2:file:test" />-->
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/blog" />

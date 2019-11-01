@@ -21,12 +21,16 @@ public class Controladora implements Serializable {
     private ArrayList<Articulo> misArticulos;
     private ArrayList<Comentario> misComentarios;
     private ArrayList<Etiqueta> misEtiquetas;
+    private long numeracionLike;
+    private long numeracionDislike;
 
     public Controladora(){
         this.misArticulos = new ArrayList<>();
         this.misUsuarios = new ArrayList<>();
         this.misComentarios = new ArrayList<>();
         this.misEtiquetas = new ArrayList<>();
+        this.numeracionLike = 0;
+        this.numeracionDislike = 0;
     }
 
     public static Controladora getInstance() {
@@ -158,6 +162,22 @@ public class Controladora implements Serializable {
 
     public ArrayList<Etiqueta> getMisEtiquetas() {
         return misEtiquetas;
+    }
+
+    public long getNumeracionLike() {
+        return numeracionLike;
+    }
+
+    public void setNumeracionLike(long numeracionLike) {
+        this.numeracionLike = numeracionLike;
+    }
+
+    public long getNumeracionDislike() {
+        return numeracionDislike;
+    }
+
+    public void setNumeracionDislike(long numeracionDislike) {
+        this.numeracionDislike = numeracionDislike;
     }
 
 }
