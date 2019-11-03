@@ -1,5 +1,7 @@
 package Clases;
 
+import services.GestionDB;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -147,6 +149,108 @@ public class Controladora implements Serializable {
         }
         return tags;
     }
+
+    public boolean validateLike(Usuario usuario, Articulo articulo, Likes like){
+        for(Likes artLike : articulo.getLikes()){
+            if(like.getUsu().equals(artLike.getUsu()) && like.getArt().equals(artLike.getArt())){
+                System.out.println("I am about to give you a false value");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public Likes findLikes(Usuario usuario, Articulo articulo, Likes like){
+        for(Likes artLike : articulo.getLikes()){
+            if(like.getUsu().equals(artLike.getUsu()) && like.getArt().equals(artLike.getArt())){
+                return artLike;
+            }
+        }
+        return null;
+    }
+
+    public void toggleLike(Likes like, Articulo art){
+        int index = art.getLikes().indexOf(like);
+        if(art.getLikes().get(index).isActivo()){
+            art.getLikes().get(index).setActivo(false);
+        }
+        else{
+            art.getLikes().get(index).setActivo(true);
+        }
+        new GestionDB<Likes>().editar(like);
+        new GestionDB<Articulo>().editar(art);
+    }
+
+    public int getActiveLikes(Articulo articulo){
+        int cant = 0;
+        for(Likes like : articulo.getLikes()){
+            if(like.isActivo()){
+                cant++;
+            }
+        }
+        return cant;
+    }
+
+    public void deactivateLikeIfDislike(Usuario usuario, Articulo articulo, Likes like){
+        if(!validateLike(usuario, articulo, like)){
+            Likes actualLike = findLikes(usuario, articulo, like);
+            if(actualLike.isActivo()){
+                toggleLike(actualLike, articulo);
+            }
+        }
+    }
+
+    public boolean validateDislike(Usuario usuario, Articulo articulo, Dislike dislike){
+        for(Dislike artDislike : articulo.getDislikes()){
+            if(dislike.getUsu().equals(artDislike.getUsu()) && dislike.getArt().equals(artDislike.getArt())){
+                System.out.println("I am about to give you a false value");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public Dislike findDislikes(Usuario usuario, Articulo articulo, Dislike dislike){
+        for(Dislike artDislike : articulo.getDislikes()){
+            if(dislike.getUsu().equals(artDislike.getUsu()) && dislike.getArt().equals(artDislike.getArt())){
+                return artDislike;
+            }
+        }
+        return null;
+    }
+
+    public int getActiveDislikes(Articulo articulo){
+        int cant = 0;
+        for(Dislike dislike : articulo.getDislikes()){
+            if(dislike.isActivo()){
+                cant++;
+            }
+        }
+        return cant;
+    }
+
+    public void toggleDislike(Dislike dislike, Articulo art){
+        int index = art.getDislikes().indexOf(dislike);
+        if(art.getDislikes().get(index).isActivo()){
+            art.getDislikes().get(index).setActivo(false);
+        }
+        else{
+            art.getDislikes().get(index).setActivo(true);
+        }
+        new GestionDB<Dislike>().editar(dislike);
+        new GestionDB<Articulo>().editar(art);
+    }
+
+    public void deactivateDislikeIfLike(Usuario usuario, Articulo articulo, Dislike dislike){
+        if(!validateDislike(usuario, articulo, dislike)){
+            Dislike actualDislike = findDislikes(usuario, articulo, dislike);
+            if(actualDislike.isActivo()){
+                toggleDislike(actualDislike, articulo);
+            }
+        }
+    }
+
+
 
     public ArrayList<Usuario> getMisUsuarios() {
         return misUsuarios;

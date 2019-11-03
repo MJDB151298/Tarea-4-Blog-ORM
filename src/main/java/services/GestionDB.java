@@ -22,6 +22,14 @@ public class GestionDB<T> {
 
     }
 
+    public GestionDB(Class<T> claseEntidad) {
+        if(emf == null) {
+            emf = Persistence.createEntityManagerFactory("MiUnidadPersistencia");
+        }
+        this.claseEntidad = claseEntidad;
+
+    }
+
 
     public EntityManager getEntityManager(){
         return emf.createEntityManager();
@@ -109,12 +117,14 @@ public class GestionDB<T> {
      *
      * @param entidadId
      */
-    public void eliminar(Object  entidadId){
+    public void eliminar(T entidad, long id){
+        String clase = entidad.getClass().getSimpleName().toString();
         EntityManager em = getEntityManager();
         em.getTransaction().begin();
         try {
-            T entidad = em.find(claseEntidad, entidadId);
-            em.remove(entidad);
+            //T entidad = em.find(claseEntidad, entidadId);
+            em.createQuery("delete from " + clase + " where id =" + id).executeUpdate();
+            //em.remove(entidad);
             em.getTransaction().commit();
         }catch (Exception ex){
             em.getTransaction().rollback();

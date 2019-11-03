@@ -53,6 +53,8 @@ public class Rutas {
             attributes.put("articulo", articulo);
             attributes.put("listaComentarios", articulo.getListaComentarios());
             attributes.put("loggedUser", request.session(true).attribute("usuario"));
+            attributes.put("likes", Controladora.getInstance().getActiveLikes(articulo));
+            attributes.put("dislikes", Controladora.getInstance().getActiveDislikes(articulo));
            return getPlantilla(configuration, attributes, "post.ftl");
         });
 
@@ -115,16 +117,60 @@ public class Rutas {
         Spark.get("/addLike/:idArticle/:usuario", (request, response) -> {
             long id = Long.parseLong(request.params("idArticle"));
             Articulo art = Controladora.getInstance().buscarArticulo(id);
+
             String username = request.params("usuario");
             Usuario usu = Controladora.getInstance().buscarAutor(username);
+
             Controladora.getInstance().setNumeracionLike(Controladora.getInstance().getNumeracionLike()+1);
+
+            Likes actualLike = null;
+            Dislike actualDislike = null;
             Likes like = new Likes(usu, art);
-            art.getLikes().add(like);
-            new GestionDB<Likes>().crear(like);
-            new GestionDB<Articulo>().editar(art);
+            Dislike dislike = new Dislike(usu, art);
+            if(Controladora.getInstance().validateLike(usu, art, like)){
+                Controladora.getInstance().deactivateDislikeIfLike(usu, art, dislike);
+                art.getLikes().add(like);
+                new GestionDB<Likes>().crear(like);
+                new GestionDB<Articulo>().editar(art);
+            }
+            else{
+                Controladora.getInstance().deactivateDislikeIfLike(usu, art, dislike);
+                actualLike = Controladora.getInstance().findLikes(usu, art, like);
+                Controladora.getInstance().toggleLike(actualLike, art);
+            }
+        response.redirect("/menu/articulo/" + art.getId());
+        return "";
+        });
+
+        Spark.get("/addDislike/:idArticle/:usuario", (request, response) -> {
+            long id = Long.parseLong(request.params("idArticle"));
+            Articulo art = Controladora.getInstance().buscarArticulo(id);
+
+            String username = request.params("usuario");
+            Usuario usu = Controladora.getInstance().buscarAutor(username);
+
+            Controladora.getInstance().setNumeracionLike(Controladora.getInstance().getNumeracionLike()+1);
+
+            Likes actualLike = null;
+            Dislike actualDislike = null;
+            Likes like = new Likes(usu, art);
+            Dislike dislike = new Dislike(usu, art);
+            if(Controladora.getInstance().validateDislike(usu, art, dislike)){
+                Controladora.getInstance().deactivateLikeIfDislike(usu, art, like);
+                art.getDislikes().add(dislike);
+                new GestionDB<Dislike>().crear(dislike);
+                new GestionDB<Articulo>().editar(art);
+            }
+            else{
+                Controladora.getInstance().deactivateLikeIfDislike(usu, art, like);
+                actualDislike = Controladora.getInstance().findDislikes(usu, art, dislike);
+                Controladora.getInstance().toggleDislike(actualDislike, art);
+            }
             response.redirect("/menu/articulo/" + art.getId());
             return "";
         });
+
+
 
         /**
          * Metodos Get y Post para logearse.

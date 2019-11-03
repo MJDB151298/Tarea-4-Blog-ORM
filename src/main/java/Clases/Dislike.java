@@ -13,6 +13,7 @@ public class Dislike implements Serializable {
     private Usuario usu;
     @OneToOne
     private Articulo art;
+    boolean activo;
 
     public Dislike()
     {
@@ -23,6 +24,7 @@ public class Dislike implements Serializable {
         this.usu = usu;
         this.art = art;
         this.id = Controladora.getInstance().getNumeracionDislike();
+        this.activo = true;
     }
 
     public Usuario getUsu() {
@@ -49,4 +51,11 @@ public class Dislike implements Serializable {
         this.id = id;
     }
 
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
 }

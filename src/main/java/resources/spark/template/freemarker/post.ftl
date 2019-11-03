@@ -89,10 +89,10 @@
         <!-- Like and Dislike Buttons -->
         <div id="demo">
           <a id="likebutton" class="btn btn-primary">Like
-            <span class="likes">${articulo.likes?size}</span>
+            <span class="likes">${likes}</span>
           </a>
           <button id="dislikebutton" class="dislike">Dislike
-            <span class="dislikes">${articulo.dislikes?size}</span>
+            <span class="dislikes">${dislikes}</span>
           </button>
         </div>
 
@@ -217,11 +217,11 @@
         document.location.href = ruta.toString();
       });
 
-      // $('#dislikebutton').on('click', function(){
-      //   var ruta = "/menu/" + --pageNumber;
-      //   console.log(ruta);
-      //   document.location.href = ruta.toString();
-      // });
+      $('#dislikebutton').on('click', function(){
+         var ruta = "/addDislike/" + articleid + "/" + username;
+         console.log(ruta);
+         document.location.href = ruta.toString();
+       });
     });
   </script>
 </body>
