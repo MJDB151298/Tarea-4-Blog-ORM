@@ -72,9 +72,9 @@ public class Rutas {
             /*new InterArticleServices().borrarTodaEtiquetaDeArticulo(art);
             new InterArticleServices().borrarTodoComentarioArticulo(art);
             new ArticleServices().borrarArticulo(id);*/
-            new GestionDB<Articulo>().eliminar(art);
+            new GestionDB<Articulo>(Articulo.class).eliminar(art);
             Controladora.getInstance().getMisArticulos().remove(art);
-            response.redirect("/menu");
+            response.redirect("/menu/1");
             return "";
         });
 
