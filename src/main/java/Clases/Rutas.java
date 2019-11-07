@@ -11,6 +11,8 @@ import spark.Spark;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +46,36 @@ public class Rutas {
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("listaUsuarios", Controladora.getInstance().getMisUsuarios());
             return getPlantilla(configuration, attributes, "autor.ftl");
+        });
+
+        Spark.post("/deleteComment/:idPost/:idComment", (request, response) -> {
+            //InterArticleServices articleServices = new InterArticleServices();
+            long idPost = Long.parseLong(request.params("idPost"));
+            Articulo art = Controladora.getInstance().buscarArticulo(idPost);
+            long idComment = Long.parseLong(request.params("idComment"));
+            Comentario comentario = Controladora.getInstance().buscarComentario(idComment);
+            System.out.println("ID comentario: " + comentario.getId());
+            //articleServices.borrarComentarioDeArticulo(art, comentario);
+            art.getListaComentarios().remove(comentario);
+            new GestionDB<Comentario>().eliminar(comentario.getId());
+            new GestionDB<Articulo>().editar(art);
+            Map<String, Object> attributes = new HashMap<>();
+            attributes.put("articulo", art);
+            attributes.put("listaComentarios", art.getListaComentarios());
+            attributes.put("loggedUser", request.session(true).attribute("usuario"));
+            return getPlantilla(configuration, attributes, "post.ftl");
+        });
+
+        Spark.get("/deletePost/:idPost", (request, response) -> {
+            long id = Long.parseLong(request.params("idPost"));
+            Articulo art = Controladora.getInstance().buscarArticulo(id);
+            /*new InterArticleServices().borrarTodaEtiquetaDeArticulo(art);
+            new InterArticleServices().borrarTodoComentarioArticulo(art);
+            new ArticleServices().borrarArticulo(id);*/
+            new GestionDB<Articulo>().eliminar(art);
+            Controladora.getInstance().getMisArticulos().remove(art);
+            response.redirect("/menu");
+            return "";
         });
 
         Spark.get("/menu/articulo/:id", (request, response) -> {
@@ -100,18 +132,76 @@ public class Rutas {
             String body = request.queryParams("postContent");
             ArrayList<Etiqueta> tags = Controladora.getInstance().divideTags(request.queryParams("tags"));
             Articulo art = new Articulo(title, body, request.session(true).attribute("usuario"));
-            for (Etiqueta etq: tags) {
-                if (Controladora.getInstance().buscarEtiqueta(etq.getId()) != null)
-                {
-                    new GestionDB<Etiqueta>().crear(etq);
+            if (Controladora.getInstance().validateArticle(art))
+            {
+                art.setListaEtiquetas(tags);
+                //new ArticleServices().crearArticulo(art);
+                for (Etiqueta etq: tags
+                ) {
+                    if (Controladora.getInstance().buscarEtqPorContenido(etq.getEtiqueta()) == null)
+                    {
+                        etq.setId(Controladora.getInstance().getMisEtiquetas().size()+1);
+                        Controladora.getInstance().getMisEtiquetas().add(etq);
+                        //new TagServices().crearEtiqueta(etq);
+                        new GestionDB<Etiqueta>().crear(etq);
+                    }
+                    //new InterArticleServices().nuevaEtiquetaAlArticulo(art, etq);
                 }
             }
-            art.setListaEtiquetas(tags);
+//            for (Etiqueta etq: tags) {
+//                if (Controladora.getInstance().buscarEtiqueta(etq.getId()) != null)
+//                {
+//                    new GestionDB<Etiqueta>().crear(etq);
+//                }
+//            }
+            //art.setListaEtiquetas(tags);
 
             new GestionDB<Articulo>().crear(art);
             Controladora.getInstance().getMisArticulos().add(art);
             response.redirect("/menu/1");
             return "";
+        });
+
+        Spark.post("/updatePost/:idArticle", (request, response) -> {
+            String title = request.queryParams("postTitle");
+            String body = request.queryParams("postContent");
+            ArrayList<Etiqueta> tags = Controladora.getInstance().divideTags(request.queryParams("tags"));
+            long id = Long.parseLong(request.params("idArticle"));
+            Articulo art = Controladora.getInstance().buscarArticulo(id);
+            art.setTitulo(title);
+            art.setCuerpo(body);
+            art.setFecha(Date.valueOf(LocalDate.now().toString()));
+            //new ArticleServices().actualizarArticulo(art);
+            //new GestionDB<Articulo>().editar(art);
+            /*for (Etiqueta e: art.getListaEtiquetas()
+            ) {
+                //new InterArticleServices().borrarEtiquetaDeArticulo(art, e);
+            }*/
+            art.getListaEtiquetas().clear();
+            new GestionDB<Articulo>().editar(art);
+            art.setListaEtiquetas(tags);
+            for (Etiqueta etq: tags
+            ) {
+                Etiqueta tag;
+                if(!Controladora.getInstance().tagExistence(etq))
+                {
+                    tag = new Etiqueta(etq.getEtiqueta());
+                    long idEtq = Controladora.getInstance().getMisEtiquetas().get(Controladora.getInstance().getMisEtiquetas().size()-1).getId()+1;
+                    tag.setId(idEtq);
+                    Controladora.getInstance().getMisEtiquetas().add(tag);
+                    //new TagServices().crearEtiqueta(tag);
+                    new GestionDB<Etiqueta>().crear(tag);
+                }
+                else
+                {
+                    tag = Controladora.getInstance().buscarEtqPorContenido(etq.getEtiqueta());
+                }
+
+                //new InterArticleServices().nuevaEtiquetaAlArticulo(art, tag);
+                new GestionDB<Articulo>().editar(art);
+            }
+            response.redirect("/menu/" + id);
+            return " ";
         });
 
         Spark.get("/addLike/:idArticle/:usuario", (request, response) -> {

@@ -117,14 +117,12 @@ public class GestionDB<T> {
      *
      * @param entidadId
      */
-    public void eliminar(T entidad, long id){
-        String clase = entidad.getClass().getSimpleName().toString();
+    public void eliminar(Object  entidadId){
         EntityManager em = getEntityManager();
         em.getTransaction().begin();
         try {
-            //T entidad = em.find(claseEntidad, entidadId);
-            em.createQuery("delete from " + clase + " where id =" + id).executeUpdate();
-            //em.remove(entidad);
+            T entidad = em.find(claseEntidad, entidadId);
+            em.remove(entidad);
             em.getTransaction().commit();
         }catch (Exception ex){
             em.getTransaction().rollback();

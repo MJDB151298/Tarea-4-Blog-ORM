@@ -54,7 +54,11 @@
         <div class="clearfix">
             <label class="pull-left checkbox-inline"><input type="checkbox" name="remember"> Remember me</label>
             <a href="#" class="pull-right">Forgot Password?</a>
-        </div>        
+        </div>
+        <br><br>
+        <div class="form-group">
+            <a href="/menu/1">Acceder sin cuenta</a>
+        </div>
     </form>
     <p class="text-center"><a href="/register">Create an Account</a></p>
 </div>

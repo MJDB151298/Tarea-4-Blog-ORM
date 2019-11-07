@@ -42,12 +42,20 @@
           <li class="nav-item">
             <a class="nav-link" href="#">About</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">${loggedUser.username}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/disconnect">Desconectar</a>
-          </li>
+          <#if loggedUser?exists>
+            <li class="nav-item">
+              <a class="nav-link" href="#">${loggedUser.username}</a>
+            </li>
+          </#if>
+          <#if loggedUser?exists>
+            <li class="nav-item">
+              <a class="nav-link" href="/disconnect">Desconectar</a>
+            </li>
+          <#else>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Login</a>
+            </li>
+          </#if>
         </ul>
       </div>
     </div>
@@ -55,7 +63,7 @@
 
   <!-- Page Content -->
   <div class="container">
-
+    <br><br>
     <div class="row">
 
       <!-- Post Content Column -->
@@ -86,29 +94,63 @@
         <p>${articulo.cuerpo}</p>
         <hr>
 
+        <!-- Post Tags -->
+        <#if articulo.listaEtiquetas?size != 0>
+          <h5>Tags:</h5>
+          <#list articulo.listaEtiquetas as etq>
+            <p id="postedTags">${etq.etiqueta}</p>
+          </#list>
+        </#if>
+        <hr>
+
+        <!-- edit comment-->
+        <#if loggedUser?exists && (articulo.autor.username == loggedUser.username || loggedUser.administrador)>
+          <a id="editButton" class="btn btn-primary">Edit</a>
+          <br><br>
+          <a id="deleteButton" class="btn btn-primary">Delete</a>
+          <br><br>
+        </#if>
+
+        <#if loggedUser?exists && articulo.autor.username == loggedUser.username>
+          <div id="mydiv" style="visibility:hidden">
+            <form method="post" action="/updatePost/${articulo.id}">
+              <div class="form-group">
+                <input class="form-control" id="postTitle" name="postTitle" placeholder="Title" type="text">
+                <textarea id="postContent"  name="postContent" class="form-control" rows="6"></textarea>
+                <input id="tags" class="form-control" name="tags" placeholder="Tags" type="text">
+              </div>
+              <button id="postPost" type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <br><br>
+          </div>
+        </#if>
+
         <!-- Like and Dislike Buttons -->
-        <div id="demo">
-          <a id="likebutton" class="btn btn-primary">Like
-            <span class="likes">${likes}</span>
-          </a>
-          <button id="dislikebutton" class="dislike">Dislike
-            <span class="dislikes">${dislikes}</span>
-          </button>
-        </div>
+        <#if loggedUser?exists>
+          <div id="demo">
+            <a id="likebutton" class="btn btn-primary">Like
+              <span class="likes">${likes}</span>
+            </a>
+            <button id="dislikebutton" class="btn btn-primary">Dislike
+              <span class="dislikes">${dislikes}</span>
+            </button>
+          </div>
+        </#if>
 
         <!-- Comments Form -->
-        <div class="card my-4">
-          <h5 class="card-header">Leave a Comment:</h5>
-          <div class="card-body">
-            <form action="/saveComment/${articulo.id}">
-              <div class="form-group">
-                <textarea name="commentContent" class="form-control" rows="3"></textarea>
-              </div>
-              <button id="upload-comment" type="submit" class="btn btn-primary">Submit</button>
-            </form>
+        <#if loggedUser?exists>
+          <div class="card my-4">
+            <h5 class="card-header">Leave a Comment:</h5>
+            <div class="card-body">
+              <form action="/saveComment/${articulo.id}">
+                <div class="form-group">
+                  <textarea name="commentContent" class="form-control" rows="3"></textarea>
+                </div>
+                <button id="upload-comment" type="submit" class="btn btn-primary">Submit</button>
+              </form>
+            </div>
           </div>
-        </div>
-
+        </#if>
 
 
 
@@ -120,6 +162,11 @@
               <h5 class="mt-0">${comentario.autor.username}</h5>
               ${comentario.comentario}
             </div>
+            <#if loggedUser?exists && (loggedUser == articulo.autor)>
+              <form action="/deleteComment/${articulo.id}/${comentario.id}" method="post">
+                <button id="delete-comment" type="submit" class="btn btn-primary">Delete</button>
+              </form>
+            </#if>
           </#list>
         </div>
 
@@ -208,8 +255,55 @@
           crossorigin="anonymous"></script>
   <script type="text/javascript">
     $(document).ready(function(){
+      $('#uploadComment').on('click', function(){
+        var comentario = $(textarea.form-control).val();
+        var usuario = "Tu crazy wawawa";
+        var html = '<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">\
+                <div class="media-body">\
+                <h5 class="mt-0">' + usuario + '</h5>' + comentario + '</div>';
+        console.log(html);
+        $('#comment-container').append(html);
+      });
+
+      $('#editButton').click(function () {
+        var mydiv = document.getElementById("mydiv");
+        mydiv.style.visibility="visible";
+        var title = "${articulo.titulo}";
+        $('#postTitle').val(
+                title
+        );
+        var body = "${articulo.cuerpo}";
+        $('#postContent').val(
+                body
+        );
+        var tags;
+        var etiquetas = $("#postedTags");
+        var i;
+        <#--for(i = 0; i < ${articulo.listaEtiquetas?size}; i++)-->
+        <#--{-->
+        <#--    console.log(etiquetas[i]);-->
+        <#--    tags+= etiquetas[i];-->
+        <#--    tags+= " ";-->
+        <#--}-->
+        <#--etiquetas.forEach(function(etq) {-->
+        <#--    tags.concat(etq.etiqueta);-->
+        <#--    tags.concat(" ");-->
+        <#--});-->
+        <#--$('#tags').val(-->
+        <#--   tags-->
+        <#--);-->
+      });
+
+      $("#deleteButton").click(function () {
+        var ruta = "/deletePost/${articulo.id}";
+        console.log(ruta);
+        document.location.href = ruta.toString();
+      });
+
+      <#if loggedUser?exists>
         var articleid = ${articulo.id};
-        var username = "${loggedUser.username}";
+       var username = "${loggedUser.username}";
+      </#if>
 
       $('#likebutton').on('click', function(){
         var ruta = "/addLike/" + articleid + "/" + username;

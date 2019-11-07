@@ -22,15 +22,15 @@ public class Filtros {
             }
         });**/
 
-        before("/menu/*", (request, response) -> {
-            Usuario usuario=request.session().attribute("usuario");
-            if(usuario==null){
-                response.redirect("/login");
-            }
-            else{
-                response.header("Usuario", usuario.getUsername());
-            }
-        });
+//        before("/menu/*", (request, response) -> {
+//            Usuario usuario=request.session().attribute("usuario");
+//            if(usuario==null){
+//                response.redirect("/login");
+//            }
+//            else{
+//                response.header("Usuario", usuario.getUsername());
+//            }
+//        });
 
         before("/login", (request, response) -> {
             Usuario usuario=request.session().attribute("usuario");

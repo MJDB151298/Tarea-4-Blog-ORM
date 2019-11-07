@@ -42,17 +42,25 @@
           <li class="nav-item">
             <a class="nav-link" href="#">About</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">${loggedUser.username}</a>
-          </li>
-          <#if loggedUser.administrador == true>
+          <#if loggedUser?exists>
+            <li class="nav-item">
+              <a class="nav-link" href="#">${loggedUser.username}</a>
+            </li>
+          </#if>
+          <#if loggedUser?exists && loggedUser.administrador == true>
             <li class="nav-item">
               <a class="nav-link" href="/autores">Autores</a>
             </li>
           </#if>
-          <li class="nav-item">
-            <a class="nav-link" href="/disconnect">Desconectar</a>
-          </li>
+          <#if loggedUser?exists>
+            <li class="nav-item">
+              <a class="nav-link" href="/disconnect">Desconectar</a>
+            </li>
+          <#else>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Login</a>
+            </li>
+          </#if>
         </ul>
       </div>
     </div>
@@ -72,7 +80,7 @@
         <h2 class="my-4">Posts</h2>
 
         <!-- Post Creation Form -->
-        <#if loggedUser.autor == true>
+        <#if loggedUser?exists && loggedUser.autor == true>
           <form method="post" action="/createPost">
             <div class="form-group">
               <input class="form-control" name="postTitle" placeholder="Title" type="text">
@@ -85,25 +93,26 @@
         </#if>
 
         <!-- Blog Post -->
-        <#list listaArticulos as articulo>
-          <div class="card mb-4">
-            <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
-            <div class="card-body">
-              <h2 class="card-title">${articulo.titulo}</h2>
-              <p class="card-text">${articulo.cuerpoResumido}</p>
-              <a href="/menu/articulo/${articulo.id?string["0"]}" class="btn btn-primary">Read More &rarr;</a>
+        <#if listaArticulos?size != 0>
+          <#list listaArticulos as articulo>
+            <div class="card mb-4">
+              <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+              <div class="card-body">
+                <h2 class="card-title">${articulo.titulo}</h2>
+                <p class="card-text">${articulo.cuerpoResumido}</p>
+                <a href="/menu/articulo/${articulo.id?string["0"]}" class="btn btn-primary">Read More &rarr;</a>
+              </div>
+              <div class="card-footer text-muted">
+                Creado el ${articulo.fecha} por
+                <a href="#">${articulo.autor.username}</a>
+                <label>Tags:</label>
+                <#list articulo.listaEtiquetas as etq>
+                  <a>${etq.etiqueta}</a>
+                </#list>
+              </div>
             </div>
-            <div class="card-footer text-muted">
-              Creado el ${articulo.fecha} por
-              <a href="#">${articulo.autor.username}</a>
-              <label>Tags:</label>
-              <#list articulo.listaEtiquetas as etq>
-                <a>${etq.etiqueta}</a>
-              </#list>
-            </div>
-          </div>
-        </#list>
-
+          </#list>
+        </#if>
         <!-- Pagination -->
         <ul class="pagination justify-content-center mb-4">
           <li id="listOlder">
