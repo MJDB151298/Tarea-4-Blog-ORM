@@ -82,12 +82,13 @@ public class Articulo implements Serializable {
     }
     public String getCuerpoResumido(){
         cuerpoResumido = "";
-        if(getCuerpo().length() > 30){
+        if(getCuerpo().length() > 70){
             int i = 0;
-            while(i < 30){
+            while(i < 70){
                 cuerpoResumido += getCuerpo().charAt(i);
                 i++;
             }
+            cuerpoResumido += "...";
         }
         else{
             cuerpoResumido = getCuerpo();
