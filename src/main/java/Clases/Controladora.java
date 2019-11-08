@@ -139,11 +139,14 @@ public class Controladora implements Serializable {
     {
         boolean flag = true;
 
-        for (Articulo articulo: Controladora.getInstance().getMisArticulos()
-        ) {
-            if(art.getTitulo().equalsIgnoreCase(articulo.getTitulo()) || art.getCuerpo().equalsIgnoreCase(articulo.getCuerpo()))
-            {
-                flag = false;
+        if(getMisArticulos().size() > 0)
+        {
+            for (Articulo articulo: Controladora.getInstance().getMisArticulos()
+            ) {
+                if(art.getTitulo().equalsIgnoreCase(articulo.getTitulo()) || art.getCuerpo().equalsIgnoreCase(articulo.getCuerpo()))
+                {
+                    flag = false;
+                }
             }
         }
 

@@ -53,17 +53,14 @@ public class Rutas {
             long idPost = Long.parseLong(request.params("idPost"));
             Articulo art = Controladora.getInstance().buscarArticulo(idPost);
             long idComment = Long.parseLong(request.params("idComment"));
+            //Comentario comentario = Controladora.getInstance().buscarComentario(idComment);
             Comentario comentario = Controladora.getInstance().buscarComentario(idComment);
-            System.out.println("ID comentario: " + comentario.getId());
             //articleServices.borrarComentarioDeArticulo(art, comentario);
             art.getListaComentarios().remove(comentario);
-            new GestionDB<Comentario>().eliminar(comentario.getId());
             new GestionDB<Articulo>().editar(art);
-            Map<String, Object> attributes = new HashMap<>();
-            attributes.put("articulo", art);
-            attributes.put("listaComentarios", art.getListaComentarios());
-            attributes.put("loggedUser", request.session(true).attribute("usuario"));
-            return getPlantilla(configuration, attributes, "post.ftl");
+            new GestionDB<Comentario>(Comentario.class).eliminar(comentario.getId());
+            response.redirect("/menu/articulo/" + idPost);
+            return "";
         });
 
         Spark.get("/deletePost/:idPost", (request, response) -> {
@@ -72,9 +69,9 @@ public class Rutas {
             /*new InterArticleServices().borrarTodaEtiquetaDeArticulo(art);
             new InterArticleServices().borrarTodoComentarioArticulo(art);
             new ArticleServices().borrarArticulo(id);*/
-            new GestionDB<Articulo>().eliminar(art);
+            new GestionDB<Articulo>(Articulo.class).eliminar(art.getId());
             Controladora.getInstance().getMisArticulos().remove(art);
-            response.redirect("/menu");
+            response.redirect("/menu/1");
             return "";
         });
 
@@ -132,6 +129,7 @@ public class Rutas {
             String body = request.queryParams("postContent");
             ArrayList<Etiqueta> tags = Controladora.getInstance().divideTags(request.queryParams("tags"));
             Articulo art = new Articulo(title, body, request.session(true).attribute("usuario"));
+
             if (Controladora.getInstance().validateArticle(art))
             {
                 art.setListaEtiquetas(tags);
@@ -144,6 +142,7 @@ public class Rutas {
                         Controladora.getInstance().getMisEtiquetas().add(etq);
                         //new TagServices().crearEtiqueta(etq);
                         new GestionDB<Etiqueta>().crear(etq);
+                        System.out.println(etq.getEtiqueta());
                     }
                     //new InterArticleServices().nuevaEtiquetaAlArticulo(art, etq);
                 }
