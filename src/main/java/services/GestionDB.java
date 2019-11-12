@@ -72,7 +72,7 @@ public class GestionDB<T> {
     public void crear(T entidad){
         EntityManager em = getEntityManager();
 
-        /**try {
+        try {
             if (em.find(claseEntidad, getValorCampo(entidad)) != null) {
                 System.out.println("La entidad a guardar existe, no creada.");
                 return;
@@ -80,7 +80,7 @@ public class GestionDB<T> {
         }catch (IllegalArgumentException ie){
             //
             System.out.println("Parametro ilegal.");
-        }**/
+        }
         getValorCampo(entidad);
         em.getTransaction().begin();
         try {

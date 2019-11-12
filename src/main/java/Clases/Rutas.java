@@ -57,7 +57,7 @@ public class Rutas {
             Comentario comentario = Controladora.getInstance().buscarComentario(idComment);
             //articleServices.borrarComentarioDeArticulo(art, comentario);
             art.getListaComentarios().remove(comentario);
-            new GestionDB<Articulo>().editar(art);
+            new GestionDB<Articulo>(Articulo.class).editar(art);
             new GestionDB<Comentario>(Comentario.class).eliminar(comentario.getId());
             response.redirect("/menu/articulo/" + idPost);
             return "";
@@ -99,7 +99,7 @@ public class Rutas {
                 valor=false;
             }
             usu.setAutor(valor);
-            new GestionDB<Usuario>().editar(usu);
+            new GestionDB<Usuario>(Usuario.class).editar(usu);
             //new UserServices().actualizarUsuario(usu);
             response.redirect("/autores");
             return "";
@@ -115,8 +115,8 @@ public class Rutas {
             Comentario newComentario = new Comentario(comentario, usuario, articulo);
 
             articulo.getListaComentarios().add(newComentario);
-            new GestionDB<Comentario>().crear(newComentario);
-            new GestionDB<Articulo>().editar(articulo);
+            new GestionDB<Comentario>(Comentario.class).crear(newComentario);
+            new GestionDB<Articulo>(Articulo.class).editar(articulo);
 
             //new ComentServices().crearComentario(newComentario);
             //new InterArticleServices().nuevoComentarioAlArticulo(articulo, newComentario);
@@ -130,32 +130,17 @@ public class Rutas {
             ArrayList<Etiqueta> tags = Controladora.getInstance().divideTags(request.queryParams("tags"));
             Articulo art = new Articulo(title, body, request.session(true).attribute("usuario"));
 
-            if (Controladora.getInstance().validateArticle(art))
-            {
-                art.setListaEtiquetas(tags);
-                //new ArticleServices().crearArticulo(art);
-                for (Etiqueta etq: tags
-                ) {
-                    if (Controladora.getInstance().buscarEtqPorContenido(etq.getEtiqueta()) == null)
-                    {
-                        etq.setId(Controladora.getInstance().getMisEtiquetas().size()+1);
-                        Controladora.getInstance().getMisEtiquetas().add(etq);
-                        //new TagServices().crearEtiqueta(etq);
-                        new GestionDB<Etiqueta>().crear(etq);
-                        System.out.println(etq.getEtiqueta());
-                    }
-                    //new InterArticleServices().nuevaEtiquetaAlArticulo(art, etq);
+            System.out.println("La cantidad de tags es: " + Controladora.getInstance().getMisEtiquetas().size());
+            for (Etiqueta etq: tags) {
+                if (Controladora.getInstance().buscarEtiqueta(etq.getId()) != null)
+                {
+                   // System.out.println()
+                    System.out.println(etq.getId());
+                    new GestionDB<Etiqueta>(Etiqueta.class).crear(etq);
                 }
             }
-//            for (Etiqueta etq: tags) {
-//                if (Controladora.getInstance().buscarEtiqueta(etq.getId()) != null)
-//                {
-//                    new GestionDB<Etiqueta>().crear(etq);
-//                }
-//            }
-            //art.setListaEtiquetas(tags);
-
-            new GestionDB<Articulo>().crear(art);
+            art.setListaEtiquetas(tags);
+            new GestionDB<Articulo>(Articulo.class).crear(art);
             Controladora.getInstance().getMisArticulos().add(art);
             response.redirect("/menu/1");
             return "";
@@ -189,7 +174,7 @@ public class Rutas {
                     tag.setId(idEtq);
                     Controladora.getInstance().getMisEtiquetas().add(tag);
                     //new TagServices().crearEtiqueta(tag);
-                    new GestionDB<Etiqueta>().crear(tag);
+                    new GestionDB<Etiqueta>(Etiqueta.class).crear(tag);
                 }
                 else
                 {
@@ -197,7 +182,7 @@ public class Rutas {
                 }
 
                 //new InterArticleServices().nuevaEtiquetaAlArticulo(art, tag);
-                new GestionDB<Articulo>().editar(art);
+                new GestionDB<Articulo>(Articulo.class).editar(art);
             }
             response.redirect("/menu/" + id);
             return " ";
@@ -219,8 +204,8 @@ public class Rutas {
             if(Controladora.getInstance().validateLike(usu, art, like)){
                 Controladora.getInstance().deactivateDislikeIfLike(usu, art, dislike);
                 art.getLikes().add(like);
-                new GestionDB<Likes>().crear(like);
-                new GestionDB<Articulo>().editar(art);
+                new GestionDB<Likes>(Likes.class).crear(like);
+                new GestionDB<Articulo>(Articulo.class).editar(art);
             }
             else{
                 Controladora.getInstance().deactivateDislikeIfLike(usu, art, dislike);
@@ -247,8 +232,8 @@ public class Rutas {
             if(Controladora.getInstance().validateDislike(usu, art, dislike)){
                 Controladora.getInstance().deactivateLikeIfDislike(usu, art, like);
                 art.getDislikes().add(dislike);
-                new GestionDB<Dislike>().crear(dislike);
-                new GestionDB<Articulo>().editar(art);
+                new GestionDB<Dislike>(Dislike.class).crear(dislike);
+                new GestionDB<Articulo>(Articulo.class).editar(art);
             }
             else{
                 Controladora.getInstance().deactivateLikeIfDislike(usu, art, like);
@@ -324,7 +309,7 @@ public class Rutas {
                 return getPlantilla(configuration, attributes, "register.ftl");
             }
             Usuario usuario = new Usuario(username, nombre, password, false);
-            new GestionDB<Usuario>().crear(usuario);
+            new GestionDB<Usuario>(Usuario.class).crear(usuario);
             Controladora.getInstance().getMisUsuarios().add(usuario);
             Session session=request.session(true);
             session.attribute("usuario", usuario);

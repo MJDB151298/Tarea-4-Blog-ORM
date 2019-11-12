@@ -120,6 +120,15 @@ public class Controladora implements Serializable {
         return etiq;
     }
 
+    public Etiqueta buscarEtiquetaPorNombre(String nombre){
+        for(Etiqueta etiqueta : getMisEtiquetas()){
+            if(etiqueta.getEtiqueta().equalsIgnoreCase(nombre)){
+                return etiqueta;
+            }
+        }
+        return null;
+    }
+
     public boolean tagExistence(Etiqueta etq)
     {
         boolean flag = false;

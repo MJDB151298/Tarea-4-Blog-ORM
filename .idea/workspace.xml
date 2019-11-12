@@ -6,17 +6,18 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Clases/Articulo.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Clases/Articulo.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Clases/Controladora.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Clases/Controladora.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Clases/Rutas.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Clases/Rutas.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/services/GestionDB.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/services/GestionDB.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Clases/Controladora.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clases/Controladora.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Clases/Articulo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clases/Articulo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Clases/Etiqueta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clases/Etiqueta.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Clases/Rutas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clases/Rutas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/services/GestionDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/GestionDB.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -227,6 +228,7 @@
       <workItem from="1572794160856" duration="5472000" />
       <workItem from="1573148528632" duration="1757000" />
       <workItem from="1573179257804" duration="4989000" />
+      <workItem from="1573514397598" duration="6065000" />
     </task>
     <task id="LOCAL-00001" summary="Subiendo parte faltante de la tarea 3">
       <created>1573102269031</created>
@@ -257,5 +259,16 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Subiendo parte faltante de la tarea 3" />
     <option name="LAST_COMMIT_MESSAGE" value="Subiendo parte faltante de la tarea 3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Clases/Controladora.java</url>
+          <line>132</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
