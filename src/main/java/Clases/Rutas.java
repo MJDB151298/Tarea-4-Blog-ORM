@@ -32,13 +32,28 @@ public class Rutas {
 
         Spark.get("/menu/:pageNumber", (request, response) -> {
             int pageNumber = Integer.parseInt(request.params("pageNumber"));
-            List<Articulo> reverseList = Controladora.getInstance().reverseArticulos(pageNumber);
+            List<Articulo> reverseList = Controladora.getInstance().reverseArticulos(pageNumber, Controladora.getInstance().getMisArticulos());
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("listaArticulos", reverseList);
             attributes.put("loggedUser", request.session(true).attribute("usuario"));
             attributes.put("pageNumber", pageNumber);
             attributes.put("sizeArticulos", reverseList.size());
             attributes.put("sizeAllArticulos", Controladora.getInstance().getMisArticulos().size());
+            return getPlantilla(configuration, attributes, "index.ftl");
+        });
+
+        Spark.get("menu/:pageNumber/:buscaTag", (request, response) -> {
+            int pageNumber = Integer.parseInt(request.params("pageNumber"));
+            String buscaTag = request.params("buscaTag");
+            System.out.println("El tag que se esta buscando es: " + buscaTag);
+            List<Articulo> articuloBusqueda = Controladora.getInstance().buscarArticuloByEtiqueta(buscaTag);
+            List<Articulo> reverseList = Controladora.getInstance().reverseArticulos(pageNumber, articuloBusqueda);
+            Map<String, Object> attributes = new HashMap<>();
+            attributes.put("listaArticulos", reverseList);
+            attributes.put("loggedUser", request.session(true).attribute("usuario"));
+            attributes.put("pageNumber", pageNumber);
+            attributes.put("sizeArticulos", reverseList.size());
+            attributes.put("sizeAllArticulos", articuloBusqueda.size());
             return getPlantilla(configuration, attributes, "index.ftl");
         });
 
@@ -155,36 +170,16 @@ public class Rutas {
             art.setTitulo(title);
             art.setCuerpo(body);
             art.setFecha(Date.valueOf(LocalDate.now().toString()));
-            //new ArticleServices().actualizarArticulo(art);
-            //new GestionDB<Articulo>().editar(art);
-            /*for (Etiqueta e: art.getListaEtiquetas()
-            ) {
-                //new InterArticleServices().borrarEtiquetaDeArticulo(art, e);
-            }*/
-            art.getListaEtiquetas().clear();
-            new GestionDB<Articulo>().editar(art);
-            art.setListaEtiquetas(tags);
-            for (Etiqueta etq: tags
-            ) {
-                Etiqueta tag;
-                if(!Controladora.getInstance().tagExistence(etq))
-                {
-                    tag = new Etiqueta(etq.getEtiqueta());
-                    long idEtq = Controladora.getInstance().getMisEtiquetas().get(Controladora.getInstance().getMisEtiquetas().size()-1).getId()+1;
-                    tag.setId(idEtq);
-                    Controladora.getInstance().getMisEtiquetas().add(tag);
-                    //new TagServices().crearEtiqueta(tag);
-                    new GestionDB<Etiqueta>(Etiqueta.class).crear(tag);
+            if(tags.size() > 0){
+                art.getListaEtiquetas().clear();
+                new GestionDB<Articulo>().editar(art);
+                art.setListaEtiquetas(tags);
+                for (Etiqueta etq: tags) {
+                    new GestionDB<Etiqueta>(Etiqueta.class).crear(etq);
                 }
-                else
-                {
-                    tag = Controladora.getInstance().buscarEtqPorContenido(etq.getEtiqueta());
-                }
-
-                //new InterArticleServices().nuevaEtiquetaAlArticulo(art, tag);
-                new GestionDB<Articulo>(Articulo.class).editar(art);
             }
-            response.redirect("/menu/" + id);
+            new GestionDB<Articulo>(Articulo.class).editar(art);
+            response.redirect("/menu/articulo/" + id);
             return " ";
         });
 

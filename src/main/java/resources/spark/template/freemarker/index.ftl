@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Blog Home - Start Bootstrap Template</title>
+  <title>The ERP Blog</title>
 
   <!-- Bootstrap core CSS -->
   <!--<link href="resources/publico/startbootstrap-blog-home-gh-pages/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
@@ -28,7 +28,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#">Start Bootstrap</a>
+      <a class="navbar-brand" href="#">ERP Home</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -93,26 +93,26 @@
         </#if>
 
         <!-- Blog Post -->
-        <#if listaArticulos?size != 0>
-          <#list listaArticulos as articulo>
-            <div class="card mb-4">
-              <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
-              <div class="card-body">
-                <h2 class="card-title">${articulo.titulo}</h2>
-                <p class="card-text">${articulo.cuerpoResumido}</p>
-                <a href="/menu/articulo/${articulo.id?string["0"]}" class="btn btn-primary">Read More &rarr;</a>
+          <#if listaArticulos?size != 0>
+            <#list listaArticulos as articulo>
+                <div class="card mb-4">
+                <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
+                <div class="card-body">
+                  <h2 class="card-title">${articulo.titulo}</h2>
+                  <p class="card-text">${articulo.cuerpoResumido}</p>
+                  <a href="/menu/articulo/${articulo.id?string["0"]}" class="btn btn-primary">Read More &rarr;</a>
+                </div>
+                <div class="card-footer text-muted">
+                  Creado el ${articulo.fecha} por
+                  <a href="#">${articulo.autor.username}</a>
+                  <label>Tags:</label>
+                 <#list articulo.listaEtiquetas as etq>
+                    <a>${etq.etiqueta}</a>
+                  </#list>
+                </div>
               </div>
-              <div class="card-footer text-muted">
-                Creado el ${articulo.fecha} por
-                <a href="#">${articulo.autor.username}</a>
-                <label>Tags:</label>
-                <#list articulo.listaEtiquetas as etq>
-                  <a>${etq.etiqueta}</a>
-                </#list>
-              </div>
-            </div>
-          </#list>
-        </#if>
+            </#list>
+          </#if>
         <!-- Pagination -->
         <ul class="pagination justify-content-center mb-4">
           <li id="listOlder">
@@ -133,9 +133,9 @@
           <h5 class="card-header">Search</h5>
           <div class="card-body">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search for...">
+              <input id="buscaTag" name="buscaTag" type="text" class="form-control" placeholder="Buscar por tag...">
               <span class="input-group-btn">
-                <button class="btn btn-secondary" type="button">Go!</button>
+                <button id="tagBusqueda" class="btn btn-secondary" type="button">Buscar</button>
               </span>
             </div>
           </div>
@@ -213,6 +213,7 @@
       var pageNumber = ${pageNumber};
       var sizeArticulos = ${sizeArticulos};
       var sizeAllArticulos = ${sizeAllArticulos};
+      var ruta;
       if(pageNumber == 1){
         $('#listOlder').addClass("page-item disabled")
       }
@@ -228,16 +229,31 @@
       }
 
       $('#newerButton').on('click', function(){
-        var ruta = "/menu/" + ++pageNumber;
+        <#if listaArticulos?exists>
+          ruta = "/menu/" + ++pageNumber;
+        <#else>
+          ruta = "/menu/" + ++pageNumber + "/" + $('#buscaTag').val();
+        </#if>
+
         console.log(ruta);
         document.location.href = ruta.toString();
       });
 
       $('#olderButton').on('click', function(){
-        var ruta = "/menu/" + --pageNumber;
+        <#if listaArticulos?exists>
+          ruta = "/menu/" + --pageNumber;
+        <#else>
+          rutra = "/menu/" + --pageNumber + "/" + $('#buscaTag').val();
+        </#if>
+
         console.log(ruta);
         document.location.href = ruta.toString();
       });
+
+      $('#tagBusqueda').on('click', function(){
+        var ruta = "/menu/1/" + $('#buscaTag').val();
+        document.location.href = ruta.toString();
+      })
     });
   </script>
 </body>

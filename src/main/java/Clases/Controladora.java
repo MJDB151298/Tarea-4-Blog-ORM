@@ -51,18 +51,18 @@ public class Controladora implements Serializable {
         this.misEtiquetas = (ArrayList<Etiqueta>) entityManager.createQuery("select e from Etiqueta e", Etiqueta.class).getResultList();
     }
 
-    public List<Articulo> reverseArticulos(int pageNumber){
+    public List<Articulo> reverseArticulos(int pageNumber, List<Articulo> articulos){
         List<Articulo> reverse = new ArrayList<>();
-        int articleStartingPoint = misArticulos.size()-1;
+        int articleStartingPoint = articulos.size()-1;
         if(pageNumber != 1){
             articleStartingPoint -= ((pageNumber-1) * 5);
         }
-        int articleEndPoint = misArticulos.size()-(pageNumber*5);
+        int articleEndPoint = articulos.size()-(pageNumber*5);
         if(articleEndPoint < 0){
             articleEndPoint = 0;
         }
         for(int i = articleStartingPoint; i >= articleEndPoint; i--) {
-            reverse.add(misArticulos.get(i));
+            reverse.add(articulos.get(i));
         }
         return reverse;
     }
@@ -322,6 +322,19 @@ public class Controladora implements Serializable {
                 toggleDislike(actualDislike, articulo);
             }
         }
+    }
+
+    public List<Articulo> buscarArticuloByEtiqueta(String etiquetaNombre){
+        List<Articulo> listaArticulos = new ArrayList<>();
+        for(Articulo articulo : Controladora.getInstance().getMisArticulos()){
+            for(Etiqueta etiqueta : articulo.getListaEtiquetas()){
+                if(etiqueta.getEtiqueta().equalsIgnoreCase(etiquetaNombre)){
+                    listaArticulos.add(articulo);
+                    break;
+                }
+            }
+        }
+        return listaArticulos;
     }
 
 
