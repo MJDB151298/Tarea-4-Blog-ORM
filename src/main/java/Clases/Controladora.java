@@ -55,9 +55,9 @@ public class Controladora implements Serializable {
     public List<Articulo> reverseArticulos(int pageNumber, List<Articulo> articulos){
         List<Articulo> reverse = new ArrayList<>();
         int articleStartingPoint = articulos.size()-1;
-        if(pageNumber != 1){
-            articleStartingPoint -= ((pageNumber-1) * 5);
-        }
+//        if(pageNumber != 1){
+//            articleStartingPoint -= ((pageNumber-1) * 5);
+//        }
         int articleEndPoint = articulos.size()-(pageNumber*5);
         if(articleEndPoint < 0){
             articleEndPoint = 0;
@@ -326,10 +326,11 @@ public class Controladora implements Serializable {
     }
 
     public List<Articulo> buscarArticuloByEtiqueta(String etiquetaNombre){
+        //System.out.println("Nombre de la etiqueta: " + etiquetaNombre);
         List<Articulo> listaArticulos = new ArrayList<>();
         for(Articulo articulo : Controladora.getInstance().getMisArticulos()){
             for(Etiqueta etiqueta : articulo.getListaEtiquetas()){
-                if(etiqueta.getEtiqueta().equalsIgnoreCase(etiquetaNombre)){
+                if(etiqueta.getEtiqueta().substring(1).equalsIgnoreCase(etiquetaNombre)){
                     listaArticulos.add(articulo);
                     break;
                 }
@@ -342,8 +343,24 @@ public class Controladora implements Serializable {
         EntityManagerFactory emf =  Persistence.createEntityManagerFactory("MiUnidadPersistencia");
         EntityManager entityManager = emf.createEntityManager();
         Query query = entityManager.createQuery("select a from Articulo a", Articulo.class);
-        query.setMaxResults(5);
-        query.setFirstResult(cantidad);
+        List<Articulo> list = query.getResultList();
+        long id = list.get(list.size()-1).getId();
+        System.out.println("el id del ultimo elemento es = " + id);
+        query.setMaxResults(Integer.parseInt(Long.toString(id)));
+        if(cantidad != 5)
+        {
+            long valor = ((id+5)-cantidad);
+            query.setMaxResults(Integer.parseInt(Long.toString(valor)));
+        }
+//        if(cantidad == 5)
+//        {
+//            query.setFirstResult(0);
+//        }
+//        else
+//        {
+//
+//        }
+        query.setFirstResult(Integer.parseInt(Long.toString(id))-7);
         return query.getResultList();
     }
 

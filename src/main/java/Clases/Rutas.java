@@ -33,8 +33,10 @@ public class Rutas {
         Spark.get("/menu/:pageNumber", (request, response) -> {
             int pageNumber = Integer.parseInt(request.params("pageNumber"));
             List<Articulo> reverseList = Controladora.getInstance().getArticuloPaginacion(pageNumber*5);
+            List<Articulo> reverseList2 = Controladora.getInstance().reverseArticulos(pageNumber, reverseList);
+            System.out.println("ArticleList size =" + reverseList2.size());
             Map<String, Object> attributes = new HashMap<>();
-            attributes.put("listaArticulos", reverseList);
+            attributes.put("listaArticulos", reverseList2);
             attributes.put("loggedUser", request.session(true).attribute("usuario"));
             attributes.put("pageNumber", pageNumber);
             attributes.put("sizeArticulos", reverseList.size());
@@ -319,7 +321,7 @@ public class Rutas {
             Session session=request.session(true);
             session.invalidate();
             response.removeCookie("usuario_id");
-            response.redirect("/login");
+            response.redirect("/menu/1");
             return "";
         });
 
