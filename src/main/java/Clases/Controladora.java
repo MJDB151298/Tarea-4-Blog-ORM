@@ -5,6 +5,7 @@ import services.GestionDB;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -335,6 +336,15 @@ public class Controladora implements Serializable {
             }
         }
         return listaArticulos;
+    }
+
+    public List<Articulo> getArticuloPaginacion(int cantidad){
+        EntityManagerFactory emf =  Persistence.createEntityManagerFactory("MiUnidadPersistencia");
+        EntityManager entityManager = emf.createEntityManager();
+        Query query = entityManager.createQuery("select a from Articulo a", Articulo.class);
+        query.setMaxResults(5);
+        query.setFirstResult(cantidad);
+        return query.getResultList();
     }
 
 

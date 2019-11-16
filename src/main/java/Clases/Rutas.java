@@ -32,7 +32,7 @@ public class Rutas {
 
         Spark.get("/menu/:pageNumber", (request, response) -> {
             int pageNumber = Integer.parseInt(request.params("pageNumber"));
-            List<Articulo> reverseList = Controladora.getInstance().reverseArticulos(pageNumber, Controladora.getInstance().getMisArticulos());
+            List<Articulo> reverseList = Controladora.getInstance().getArticuloPaginacion(pageNumber*5);
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("listaArticulos", reverseList);
             attributes.put("loggedUser", request.session(true).attribute("usuario"));
