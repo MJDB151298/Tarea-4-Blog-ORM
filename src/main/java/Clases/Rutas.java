@@ -76,7 +76,7 @@ public class Rutas {
             art.getListaComentarios().remove(comentario);
             new GestionDB<Articulo>(Articulo.class).editar(art);
             new GestionDB<Comentario>(Comentario.class).eliminar(comentario.getId());
-            response.redirect("/menu/articulo/" + idPost);
+            response.redirect("/articulo/" + idPost);
             return "";
         });
 
@@ -92,7 +92,7 @@ public class Rutas {
             return "";
         });
 
-        Spark.get("/menu/articulo/:id", (request, response) -> {
+        Spark.get("/articulo/:id", (request, response) -> {
             long id = Long.parseLong(request.params("id"));
             Articulo articulo = Controladora.getInstance().buscarArticulo(id);
             Map<String, Object> attributes = new HashMap<>();
@@ -137,7 +137,7 @@ public class Rutas {
 
             //new ComentServices().crearComentario(newComentario);
             //new InterArticleServices().nuevoComentarioAlArticulo(articulo, newComentario);
-            response.redirect("/menu/articulo/"+id);
+            response.redirect("/articulo/"+id);
             return "";
         });
 
@@ -181,7 +181,7 @@ public class Rutas {
                 }
             }
             new GestionDB<Articulo>(Articulo.class).editar(art);
-            response.redirect("/menu/articulo/" + id);
+            response.redirect("/articulo/" + id);
             return " ";
         });
 
@@ -209,7 +209,7 @@ public class Rutas {
                 actualLike = Controladora.getInstance().findLikes(usu, art, like);
                 Controladora.getInstance().toggleLike(actualLike, art);
             }
-        response.redirect("/menu/articulo/" + art.getId());
+        response.redirect("/articulo/" + art.getId());
         return "";
         });
 
@@ -237,7 +237,7 @@ public class Rutas {
                 actualDislike = Controladora.getInstance().findDislikes(usu, art, dislike);
                 Controladora.getInstance().toggleDislike(actualDislike, art);
             }
-            response.redirect("/menu/articulo/" + art.getId());
+            response.redirect("/articulo/" + art.getId());
             return "";
         });
 

@@ -100,7 +100,7 @@
                 <div class="card-body">
                   <h2 class="card-title">${articulo.titulo}</h2>
                   <p class="card-text">${articulo.cuerpoResumido}</p>
-                  <a href="/menu/articulo/${articulo.id?string["0"]}" class="btn btn-primary">Read More &rarr;</a>
+                  <a href="/articulo/${articulo.id?string["0"]}" class="btn btn-primary">Read More &rarr;</a>
                 </div>
                 <div class="card-footer text-muted">
                   Creado el ${articulo.fecha} por
