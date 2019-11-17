@@ -6,13 +6,15 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/Clases/Controladora.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Clases/Controladora.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/Clases/Rutas.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/Clases/Rutas.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Clases/Controladora.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clases/Controladora.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Clases/Rutas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clases/Rutas.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/resources/spark/template/freemarker/index.ftl" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/resources/spark/template/freemarker/index.ftl" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -297,7 +299,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Clases/Controladora.java</url>
-          <line>133</line>
+          <line>128</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

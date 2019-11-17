@@ -33,10 +33,11 @@ public class Rutas {
         Spark.get("/menu/:pageNumber", (request, response) -> {
             int pageNumber = Integer.parseInt(request.params("pageNumber"));
             List<Articulo> reverseList = Controladora.getInstance().getArticuloPaginacion(pageNumber*5);
-            List<Articulo> reverseList2 = Controladora.getInstance().reverseArticulos(pageNumber, reverseList);
-            System.out.println("ArticleList size =" + reverseList2.size());
+            System.out.println("El id del articulo que retorno es: " + reverseList.get(0).getId());
+            //List<Articulo> reverseList2 = Controladora.getInstance().reverseArticulos(pageNumber, reverseList);
+           //System.out.println("ArticleList size =" + reverseList2.size());
             Map<String, Object> attributes = new HashMap<>();
-            attributes.put("listaArticulos", reverseList2);
+            attributes.put("listaArticulos", reverseList);
             attributes.put("loggedUser", request.session(true).attribute("usuario"));
             attributes.put("pageNumber", pageNumber);
             attributes.put("sizeArticulos", reverseList.size());
@@ -192,7 +193,7 @@ public class Rutas {
             String username = request.params("usuario");
             Usuario usu = Controladora.getInstance().buscarAutor(username);
 
-            Controladora.getInstance().setNumeracionLike(Controladora.getInstance().getNumeracionLike()+1);
+
 
             Likes actualLike = null;
             Dislike actualDislike = null;
@@ -200,6 +201,8 @@ public class Rutas {
             Dislike dislike = new Dislike(usu, art);
             if(Controladora.getInstance().validateLike(usu, art, like)){
                 Controladora.getInstance().deactivateDislikeIfLike(usu, art, dislike);
+                Controladora.getInstance().setNumeracionLike(Controladora.getInstance().getNumeracionLike()+1);
+                like.setId(Controladora.getInstance().getNumeracionLike());
                 art.getLikes().add(like);
                 new GestionDB<Likes>(Likes.class).crear(like);
                 new GestionDB<Articulo>(Articulo.class).editar(art);
@@ -220,14 +223,17 @@ public class Rutas {
             String username = request.params("usuario");
             Usuario usu = Controladora.getInstance().buscarAutor(username);
 
-            Controladora.getInstance().setNumeracionLike(Controladora.getInstance().getNumeracionLike()+1);
+
 
             Likes actualLike = null;
             Dislike actualDislike = null;
             Likes like = new Likes(usu, art);
             Dislike dislike = new Dislike(usu, art);
+            //System.out.println("El id de este dislike es: " + dislike.getId());
             if(Controladora.getInstance().validateDislike(usu, art, dislike)){
                 Controladora.getInstance().deactivateLikeIfDislike(usu, art, like);
+                Controladora.getInstance().setNumeracionDislike(Controladora.getInstance().getNumeracionDislike()+1);
+                dislike.setId(Controladora.getInstance().getNumeracionDislike());
                 art.getDislikes().add(dislike);
                 new GestionDB<Dislike>(Dislike.class).crear(dislike);
                 new GestionDB<Articulo>(Articulo.class).editar(art);

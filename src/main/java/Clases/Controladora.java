@@ -11,12 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Controladora implements Serializable {
-    Usuario usuario1 = new Usuario("Zycotec01", "Marcos", "hola123", true);
-    /**Articulo articulo1 = new Articulo(1, "La vida de Marcos", "Este es un articulo escrito por Marcos", usuario1);
-    Articulo articulo2 = new Articulo(2, "La vida de Luis", "Este es un articulo escrito por Luis", usuario1);
-    Articulo articulo3 = new Articulo(3, "La vida de Saul", "I’m honestly quite impressed with this episode so far, especially considering it’s a Whisperers only and we won’t (I’m assuming) see any of the other main cast, except maybe in the final moments.\n" +
-            "\n" +
-            "I feel like the cinematography and sound got much better too, which is really making the show more visually appealing.", usuario1);**/
 
     private static final long serialVersionUID = 1L;
     private static Controladora controladora;
@@ -50,6 +44,8 @@ public class Controladora implements Serializable {
         this.misArticulos = (ArrayList<Articulo>) entityManager.createQuery("select a from Articulo a", Articulo.class).getResultList();
         this.misComentarios = (ArrayList<Comentario>) entityManager.createQuery("select c from Comentario c", Comentario.class).getResultList();
         this.misEtiquetas = (ArrayList<Etiqueta>) entityManager.createQuery("select e from Etiqueta e", Etiqueta.class).getResultList();
+        this.numeracionLike = (Long) entityManager.createQuery("select count(n.id) from Likes n").getSingleResult();
+        this.numeracionDislike = (Long) entityManager.createQuery("select count(n.id) from Dislike n").getSingleResult();
     }
 
     public List<Articulo> reverseArticulos(int pageNumber, List<Articulo> articulos){
@@ -247,13 +243,15 @@ public class Controladora implements Serializable {
     public void toggleLike(Likes like, Articulo art){
         int index = art.getLikes().indexOf(like);
         if(art.getLikes().get(index).isActivo()){
+            System.out.println("Estoy tratando de desactivar el like");
             art.getLikes().get(index).setActivo(false);
         }
         else{
+            System.out.println("Estoy tratando de activar el like");
             art.getLikes().get(index).setActivo(true);
         }
         new GestionDB<Likes>().editar(like);
-        new GestionDB<Articulo>().editar(art);
+        //new GestionDB<Articulo>().editar(art);
     }
 
     public int getActiveLikes(Articulo articulo){
@@ -307,13 +305,15 @@ public class Controladora implements Serializable {
     public void toggleDislike(Dislike dislike, Articulo art){
         int index = art.getDislikes().indexOf(dislike);
         if(art.getDislikes().get(index).isActivo()){
+            System.out.println("Estoy tratando de desactivar el dislike");
             art.getDislikes().get(index).setActivo(false);
         }
         else{
+            System.out.println("Estoy tratando de activar el dislike");
             art.getDislikes().get(index).setActivo(true);
         }
         new GestionDB<Dislike>().editar(dislike);
-        new GestionDB<Articulo>().editar(art);
+        //new GestionDB<Articulo>().editar(art);
     }
 
     public void deactivateDislikeIfLike(Usuario usuario, Articulo articulo, Dislike dislike){
@@ -342,25 +342,24 @@ public class Controladora implements Serializable {
     public List<Articulo> getArticuloPaginacion(int cantidad){
         EntityManagerFactory emf =  Persistence.createEntityManagerFactory("MiUnidadPersistencia");
         EntityManager entityManager = emf.createEntityManager();
-        Query query = entityManager.createQuery("select a from Articulo a", Articulo.class);
+        Query query = entityManager.createQuery("select a from Articulo a order by a.id desc", Articulo.class);
         List<Articulo> list = query.getResultList();
-        long id = list.get(list.size()-1).getId();
-        System.out.println("el id del ultimo elemento es = " + id);
-        query.setMaxResults(Integer.parseInt(Long.toString(id)));
+        long id = list.get(0).getId();
+        long valor = 0;
+        System.out.println("el id del primer elemento es = " + id);
+        query.setMaxResults(5);
         if(cantidad != 5)
         {
-            long valor = ((id+5)-cantidad);
+            valor = ((id+5)-cantidad);
             query.setMaxResults(Integer.parseInt(Long.toString(valor)));
         }
-//        if(cantidad == 5)
-//        {
-//            query.setFirstResult(0);
-//        }
-//        else
-//        {
-//
-//        }
-        query.setFirstResult(Integer.parseInt(Long.toString(id))-7);
+        if(cantidad == 5){
+            query.setFirstResult(0);
+        }
+        else {
+            int firstResult = (int)id - (int)valor;
+            query.setFirstResult(firstResult);
+        }
         return query.getResultList();
     }
 
