@@ -87,6 +87,15 @@ public class Controladora implements Serializable {
         return usuario;
     }
 
+    public Usuario buscarUsuarioPorID(String id){
+        for(Usuario usuario : Controladora.getInstance().getMisUsuarios()){
+            if(usuario.getId().equalsIgnoreCase(id)){
+                return usuario;
+            }
+        }
+        return null;
+    }
+
     public Comentario buscarComentario(long id)
     {
         Comentario coment = null;
@@ -344,23 +353,26 @@ public class Controladora implements Serializable {
         EntityManager entityManager = emf.createEntityManager();
         Query query = entityManager.createQuery("select a from Articulo a order by a.id desc", Articulo.class);
         List<Articulo> list = query.getResultList();
-        long id = list.get(0).getId();
-        long valor = 0;
-        System.out.println("el id del primer elemento es = " + id);
-        query.setMaxResults(5);
-        if(cantidad != 5)
-        {
-            valor = ((id+5)-cantidad);
-            query.setMaxResults(Integer.parseInt(Long.toString(valor)));
+        if(list.size() > 0){
+            long id = list.get(0).getId();
+            long valor = 0;
+            System.out.println("el id del primer elemento es = " + id);
+            query.setMaxResults(5);
+            if(cantidad != 5)
+            {
+                valor = ((id+5)-cantidad);
+                query.setMaxResults(Integer.parseInt(Long.toString(valor)));
+            }
+            if(cantidad == 5){
+                query.setFirstResult(0);
+            }
+            else {
+                int firstResult = (int)id - (int)valor;
+                query.setFirstResult(firstResult);
+            }
+            return query.getResultList();
         }
-        if(cantidad == 5){
-            query.setFirstResult(0);
-        }
-        else {
-            int firstResult = (int)id - (int)valor;
-            query.setFirstResult(firstResult);
-        }
-        return query.getResultList();
+        return list;
     }
 
 

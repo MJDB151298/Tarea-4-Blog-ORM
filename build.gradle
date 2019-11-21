@@ -23,4 +23,6 @@ dependencies {
     //Librerias de Hibernate
     compile 'org.hibernate:hibernate-core:5.4.1.Final'
     compile 'org.hibernate:hibernate-entitymanager:5.4.1.Final'
+
+    compile(group: 'commons-codec', name: 'commons-codec', version: '1.8')
 }

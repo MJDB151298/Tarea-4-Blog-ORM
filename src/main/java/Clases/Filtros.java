@@ -1,13 +1,14 @@
 package Clases;
-import static spark.Spark.*;
+import static spark.Spark.before;
 
 public class Filtros {
     public void aplicarFiltros(){
         before((request, response) -> {
             Usuario usuario = request.session().attribute("usuario");
-            String username = request.cookie("usuario_id");
-            if(username != null && usuario == null){
-                Usuario userLog = Controladora.getInstance().buscarAutor(username);
+            String id = request.cookie("usuario_id");
+            if(id != null && usuario == null){
+                //String unhashedUsername = DigestUtils.getDigest(username);
+                Usuario userLog = Controladora.getInstance().buscarUsuarioPorID(id);
                 request.session(true).attribute("usuario", userLog);
             }
         });

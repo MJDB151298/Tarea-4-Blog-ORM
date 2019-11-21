@@ -12,6 +12,7 @@ public class Articulo implements Serializable {
     @Id
     private long id;
     private String titulo;
+    @Column(length = 2000)
     private String cuerpo;
     @OneToOne
     private Usuario autor;

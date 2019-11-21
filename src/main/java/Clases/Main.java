@@ -1,10 +1,12 @@
 package Clases;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import services.BootStrapServices;
 import services.DataBaseServices;
 import services.GestionDB;
 
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class Main {
 
@@ -26,8 +28,11 @@ public class Main {
         Controladora.getInstance().setData();
 
         if(Controladora.getInstance().getMisUsuarios().size() == 0){
-            Usuario usuario = new Usuario("Admin", "Admin", "admin", true);
-            new GestionDB<Usuario>().crear(usuario);
+            System.out.println("Registrando al usuario admin");
+            String adminPassword = "admin";
+            Usuario usuario = new Usuario("Admin", "Admin", DigestUtils.md5Hex(adminPassword), true);
+            usuario.setId(UUID.randomUUID().toString());
+            new GestionDB<Usuario>(Usuario.class).crear(usuario);
             Controladora.getInstance().getMisUsuarios().add(usuario);
         }
     }

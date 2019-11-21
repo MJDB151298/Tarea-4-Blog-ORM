@@ -4,6 +4,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.Version;
+import org.apache.commons.codec.digest.DigestUtils;
 import services.GestionDB;
 import spark.Session;
 import spark.Spark;
@@ -13,10 +14,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Rutas {
     public void manejoRutas()
@@ -33,7 +31,6 @@ public class Rutas {
         Spark.get("/menu/:pageNumber", (request, response) -> {
             int pageNumber = Integer.parseInt(request.params("pageNumber"));
             List<Articulo> reverseList = Controladora.getInstance().getArticuloPaginacion(pageNumber*5);
-            System.out.println("El id del articulo que retorno es: " + reverseList.get(0).getId());
             //List<Articulo> reverseList2 = Controladora.getInstance().reverseArticulos(pageNumber, reverseList);
            //System.out.println("ArticleList size =" + reverseList2.size());
             Map<String, Object> attributes = new HashMap<>();
@@ -262,7 +259,8 @@ public class Rutas {
         Spark.post("/login", (request, response) -> {
             String username = request.queryParams("username");
             String password = request.queryParams("password");
-            if(!Controladora.getInstance().validatePassword(username, password)){
+            String passwordHash = DigestUtils.md5Hex(password);
+            if(!Controladora.getInstance().validatePassword(username, passwordHash)){
                 String warningText = "Usuario o contrasena incorrectos.";
                 Map<String, Object> attributes = new HashMap<>();
                 attributes.put("warningText", warningText);
@@ -276,9 +274,7 @@ public class Rutas {
             String remember = request.queryParams("remember");
 
             if(remember != null){
-
-                System.out.println("waaaaaasaaaa");
-                response.cookie("usuario_id", usuario.getUsername(), 604800000);
+                response.cookie("usuario_id", usuario.getId(), 604800000);
             }
             response.redirect("/menu/1");
             return "";
@@ -311,7 +307,9 @@ public class Rutas {
                 attributes.put("warningText", warningText);
                 return getPlantilla(configuration, attributes, "register.ftl");
             }
-            Usuario usuario = new Usuario(username, nombre, password, false);
+            String hashedPassword = DigestUtils.md5Hex(password);
+            Usuario usuario = new Usuario(username, nombre, hashedPassword, false);
+            usuario.setId(UUID.randomUUID().toString());
             new GestionDB<Usuario>(Usuario.class).crear(usuario);
             Controladora.getInstance().getMisUsuarios().add(usuario);
             Session session=request.session(true);
