@@ -339,7 +339,7 @@ public class Controladora implements Serializable {
         List<Articulo> listaArticulos = new ArrayList<>();
         for(Articulo articulo : Controladora.getInstance().getMisArticulos()){
             for(Etiqueta etiqueta : articulo.getListaEtiquetas()){
-                if(etiqueta.getEtiqueta().substring(1).equalsIgnoreCase(etiquetaNombre)){
+                if(etiqueta.getEtiqueta().equalsIgnoreCase(etiquetaNombre)){
                     listaArticulos.add(articulo);
                     break;
                 }

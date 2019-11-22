@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7595b836-c63a-45d4-94f0-5fb4a1e1118f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Clases/Articulo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clases/Articulo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Clases/Controladora.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clases/Controladora.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Clases/Filtros.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clases/Filtros.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Clases/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clases/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Clases/Rutas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clases/Rutas.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Clases/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Clases/Usuario.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -262,7 +256,8 @@
       <workItem from="1573743293013" duration="4201000" />
       <workItem from="1573873792715" duration="983000" />
       <workItem from="1574047320516" duration="1968000" />
-      <workItem from="1574309573491" duration="6771000" />
+      <workItem from="1574309573491" duration="6775000" />
+      <workItem from="1574368796232" duration="6340000" />
     </task>
     <task id="LOCAL-00001" summary="Subiendo parte faltante de la tarea 3">
       <created>1573102269031</created>

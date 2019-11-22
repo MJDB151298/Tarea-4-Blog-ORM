@@ -14,7 +14,6 @@ public class Articulo implements Serializable {
     private String titulo;
     @Column(length = 2000)
     private String cuerpo;
-    @OneToOne
     private Usuario autor;
     private Date fecha;
     @OneToMany
