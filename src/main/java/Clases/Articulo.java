@@ -16,15 +16,15 @@ public class Articulo implements Serializable {
     private String cuerpo;
     private Usuario autor;
     private Date fecha;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Comentario> listaComentarios;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Etiqueta> listaEtiquetas;
     @Transient
     private String cuerpoResumido;
-    @OneToMany
+    @ManyToMany(mappedBy = "art", cascade = CascadeType.ALL)
     private List<Likes> likes;
-    @OneToMany
+    @ManyToMany(mappedBy = "art", cascade = CascadeType.ALL)
     private List<Dislike> dislikes;
 
 
@@ -49,7 +49,7 @@ public class Articulo implements Serializable {
     }
 
     public Articulo(String titulo, String cuerpo, Usuario autor){
-        this.id = Controladora.getInstance().getMisArticulos().size()+1;
+        this.id = Controladora.getInstance().getMisArticulos().get(Controladora.getInstance().getMisArticulos().size()-1).getId()+1;
         this.titulo = titulo;
         this.cuerpo = cuerpo;
         this.autor = autor;

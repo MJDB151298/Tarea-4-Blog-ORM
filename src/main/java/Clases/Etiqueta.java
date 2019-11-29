@@ -15,7 +15,7 @@ public class Etiqueta implements Serializable {
     }
 
     public Etiqueta(String etiqueta){
-        this.id = Controladora.getInstance().getMisEtiquetas().size()+1;
+        this.id = Controladora.getInstance().getMisEtiquetas().get(Controladora.getInstance().getMisEtiquetas().size()-1).getId()+1;
         this.etiqueta = etiqueta;
     }
 

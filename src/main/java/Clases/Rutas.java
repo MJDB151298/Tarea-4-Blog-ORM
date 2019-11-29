@@ -201,7 +201,7 @@ public class Rutas {
                 Controladora.getInstance().setNumeracionLike(Controladora.getInstance().getNumeracionLike()+1);
                 like.setId(Controladora.getInstance().getNumeracionLike());
                 art.getLikes().add(like);
-                new GestionDB<Likes>(Likes.class).crear(like);
+                //new GestionDB<Likes>(Likes.class).crear(like);
                 new GestionDB<Articulo>(Articulo.class).editar(art);
             }
             else{
@@ -231,11 +231,16 @@ public class Rutas {
                 Controladora.getInstance().deactivateLikeIfDislike(usu, art, like);
                 Controladora.getInstance().setNumeracionDislike(Controladora.getInstance().getNumeracionDislike()+1);
                 dislike.setId(Controladora.getInstance().getNumeracionDislike());
+                System.out.println("El id del dislike es " + dislike.getId());
                 art.getDislikes().add(dislike);
-                new GestionDB<Dislike>(Dislike.class).crear(dislike);
+                for(Dislike articuloDislikes : art.getDislikes()){
+                    System.out.println("El id del dislike dentro de este articulo es: "  + articuloDislikes.getId());
+                }
+                //new GestionDB<Dislike>(Dislike.class).crear(dislike);
                 new GestionDB<Articulo>(Articulo.class).editar(art);
             }
             else{
+                System.out.println("The dislike didnt pass the validation, it already exists");
                 Controladora.getInstance().deactivateLikeIfDislike(usu, art, like);
                 actualDislike = Controladora.getInstance().findDislikes(usu, art, dislike);
                 Controladora.getInstance().toggleDislike(actualDislike, art);

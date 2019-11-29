@@ -46,6 +46,9 @@ public class Controladora implements Serializable {
         this.misEtiquetas = (ArrayList<Etiqueta>) entityManager.createQuery("select e from Etiqueta e", Etiqueta.class).getResultList();
         this.numeracionLike = (Long) entityManager.createQuery("select count(n.id) from Likes n").getSingleResult();
         this.numeracionDislike = (Long) entityManager.createQuery("select count(n.id) from Dislike n").getSingleResult();
+        System.out.println("La cantidad de likes existentes es: " + numeracionLike);
+        System.out.println("La cantidad de dislike no existentes es: " + numeracionDislike);
+        System.out.println("La cantidad de dislikes en un articulo es: " + misArticulos.get(0).getDislikes().size());
     }
 
     public List<Articulo> reverseArticulos(int pageNumber, List<Articulo> articulos){
@@ -327,6 +330,7 @@ public class Controladora implements Serializable {
 
     public void deactivateDislikeIfLike(Usuario usuario, Articulo articulo, Dislike dislike){
         if(!validateDislike(usuario, articulo, dislike)){
+            System.out.println("I am deactivating the dislike");
             Dislike actualDislike = findDislikes(usuario, articulo, dislike);
             if(actualDislike.isActivo()){
                 toggleDislike(actualDislike, articulo);
